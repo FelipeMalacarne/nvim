@@ -12,7 +12,7 @@ return {
       },
       ---@type table<string, conform.FormatterUnit[]>
       formatters_by_ft = {
-        lua = { "stylua" },
+        lua = { "luaformatter", "stylua" },
         fish = { "fish_indent" },
         sh = { "shfmt" },
         php = { "pint" },

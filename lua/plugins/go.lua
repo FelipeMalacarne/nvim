@@ -28,18 +28,6 @@ return {
         debounce_text_changes = 150,
       },
       servers = {
-        rust_analyzer = {
-          settings = {
-            ["rust-analyzer"] = {
-              procMacro = { enable = true },
-              cargo = { allFeatures = true },
-              checkOnSave = {
-                command = "clippy",
-                extraArgs = { "--no-deps" },
-              },
-            },
-          },
-        },
         gopls = {
           settings = {
             gopls = {
