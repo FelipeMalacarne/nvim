@@ -6,7 +6,7 @@ return {
     lazy     = false,  -- must load at startup
     opts = {
       flavour               = "mocha",
-      transparent_background = false,
+      transparent_background = true,
       integrations = {
         treesitter = true,
         gitsigns   = true,
