@@ -1,6 +1,7 @@
-vim.opt.termguicolors = true
-vim.cmd.colorscheme("catppuccin")
+vim.g.mapleader = " "
+vim.g.maplocalleader = " "
 
+vim.opt.termguicolors = true
 vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.cursorline = true
@@ -81,4 +82,67 @@ vim.opt.maxmempattern = 20000
 
 -- Statusline
 -- Git branch
-lc gg
+local cached_branch = ""
+local last_check = 0
+local function git_branch()
+    local now = vim.loop.now()
+    if now - last_check > 5000 then
+      cached_branch = vim.fn.system("git branch --show-current 2>/dev/null | tr -d '\n'")
+      last_check = now
+    end
+    if cached_banch ~= "" then
+      return " \u{e725} " .. cached_branch .. " "
+    end
+    return ""
+end
+
+local function file_type()
+	local ft = vim.bo.filetype
+	local icons = {
+		lua = "\u{e620} ", -- nf-dev-lua
+		python = "\u{e73c} ", -- nf-dev-python
+		javascript = "\u{e74e} ", -- nf-dev-javascript
+		typescript = "\u{e628} ", -- nf-dev-typescript
+		javascriptreact = "\u{e7ba} ",
+		typescriptreact = "\u{e7ba} ",
+		html = "\u{e736} ", -- nf-dev-html5
+		css = "\u{e749} ", -- nf-dev-css3
+		scss = "\u{e749} ",
+		json = "\u{e60b} ", -- nf-dev-json
+		markdown = "\u{e73e} ", -- nf-dev-markdown
+		vim = "\u{e62b} ", -- nf-dev-vim
+		sh = "\u{f489} ", -- nf-oct-terminal
+		bash = "\u{f489} ",
+		zsh = "\u{f489} ",
+		rust = "\u{e7a8} ", -- nf-dev-rust
+		go = "\u{e724} ", -- nf-dev-go
+		c = "\u{e61e} ", -- nf-dev-c
+		cpp = "\u{e61d} ", -- nf-dev-cplusplus
+		java = "\u{e738} ", -- nf-dev-java
+		php = "\u{e73d} ", -- nf-dev-php
+		ruby = "\u{e739} ", -- nf-dev-ruby
+		swift = "\u{e755} ", -- nf-dev-swift
+		kotlin = "\u{e634} ",
+		dart = "\u{e798} ",
+		elixir = "\u{e62d} ",
+		haskell = "\u{e777} ",
+		sql = "\u{e706} ",
+		yaml = "\u{f481} ",
+		toml = "\u{e615} ",
+		xml = "\u{f05c} ",
+		dockerfile = "\u{f308} ", -- nf-linux-docker
+		gitcommit = "\u{f418} ", -- nf-oct-git_commit
+		gitconfig = "\u{f1d3} ", -- nf-fa-git
+		vue = "\u{fd42} ", -- nf-md-vuejs
+		svelte = "\u{e697} ",
+		astro = "\u{e628} ",
+	}
+
+	if ft == "" then
+		return " \u{f15b} " -- nf-fa-file_o
+	end
+
+	return ((icons[ft] or " \u{f15b} ") .. ft)
+end
+
+
