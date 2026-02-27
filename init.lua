@@ -65,3 +65,20 @@ vim.opt.modifiable = true
 vim.opt.encoding = "UTF-8"
 
 vim.opt.guicursor = "n-v-c:block,i-ci-ve:block,r-cr:hor20,o:hor50,a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor,sm:block-blinkwait175-blinkoff150-blinkon175"
+
+vim.opt.foldmethod = "expr"
+vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+vim.opt.foldlevel = 99
+
+vim.opt.splitbelow = true
+vim.opt.splitright = true
+
+vim.opt.wildmenu = true
+vim.opt.wildmode = "longest:full,full"
+vim.opt.diffopt:append("linematch:60")
+vim.opt.redrawtime = 10000
+vim.opt.maxmempattern = 20000
+
+-- Statusline
+-- Git branch
+lc gg
