@@ -1,0 +1,39 @@
+local autocmd = vim.api.nvim_create_autocmd
+local augroup = vim.api.nvim_create_augroup
+
+-- Restore cursor position when reopening a file
+autocmd("BufReadPost", {
+  group = augroup("restore_cursor", { clear = true }),
+  callback = function(ev)
+    local mark = vim.api.nvim_buf_get_mark(ev.buf, '"')
+    local line_count = vim.api.nvim_buf_line_count(ev.buf)
+    if mark[1] > 0 and mark[1] <= line_count then
+      vim.api.nvim_win_set_cursor(0, mark)
+    end
+  end,
+})
+
+-- Disable auto-comment continuation on new lines
+autocmd("FileType", {
+  group = augroup("no_auto_comment", { clear = true }),
+  pattern = "*",
+  callback = function()
+    vim.opt_local.formatoptions:remove({ "c", "r", "o" })
+  end,
+})
+
+-- Highlight text briefly after yanking
+autocmd("TextYankPost", {
+  group = augroup("yank_highlight", { clear = true }),
+  callback = function()
+    vim.highlight.on_yank({ higroup = "Visual", timeout = 150 })
+  end,
+})
+
+-- Resize splits when the terminal window is resized
+autocmd("VimResized", {
+  group = augroup("resize_splits", { clear = true }),
+  callback = function()
+    vim.cmd("tabdo wincmd =")
+  end,
+})
