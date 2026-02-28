@@ -30,7 +30,7 @@ return {
     main  = "ibl",
     opts  = {
       indent  = { char = "│" },
-      scope   = { enabled = true },
+      scope   = { enabled = false },
       exclude = {
         filetypes = { "help", "lazy", "neo-tree", "Trouble", "toggleterm" },
       },
