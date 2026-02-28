@@ -31,5 +31,11 @@ map("n", "N",     "Nzzzv",   { desc = "Prev search result (centered)" })
 -- Save
 map({ "n", "i" }, "<C-s>", "<cmd>w<cr><esc>", { desc = "Save file" })
 
+-- Reload config
+map("n", "<leader>rc", "<cmd>source $MYVIMRC<cr>", { desc = "Reload config" })
+
+-- Diagnostics
+map("n", "<leader>cd", vim.diagnostic.open_float, { desc = "Code diagnostics" })
+
 -- Quit
 map("n", "<leader>q", "<cmd>q<cr>", { desc = "Quit" })
