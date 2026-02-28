@@ -30,6 +30,20 @@ autocmd("TextYankPost", {
   end,
 })
 
+-- When nvim is called with a directory argument (e.g. nvim .), cd into it
+-- and show the dashboard instead of an empty/broken buffer
+autocmd("VimEnter", {
+  group = augroup("open_dir", { clear = true }),
+  once = true,
+  callback = function()
+    local arg = vim.fn.argv(0)
+    if arg and arg ~= "" and vim.fn.isdirectory(arg) == 1 then
+      vim.cmd("cd " .. vim.fn.fnameescape(arg))
+      vim.cmd("bwipeout")
+    end
+  end,
+})
+
 -- Warn if lazygit / lazydocker are not installed
 autocmd("VimEnter", {
   group = augroup("check_lazy_tools", { clear = true }),
