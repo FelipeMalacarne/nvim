@@ -20,10 +20,15 @@ return {
         nerd_font_variant        = "mono",
       },
       sources = {
-        default = { "lsp", "path", "snippets", "buffer" },
+        default = { "lsp", "path", "snippets", "buffer", "copilot" },
         providers = {
-          -- Raise LSP priority so it shows first
           lsp = { score_offset = 5 },
+          copilot = {
+            name = "copilot",
+            module = "blink-copilot",
+            score_offset = 100,
+            async = true,
+          },
         },
       },
       completion = {
