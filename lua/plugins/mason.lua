@@ -25,6 +25,7 @@ return {
 				-- Linters
 				"eslint_d",
 				"golangci-lint",
+				"phpstan",
 			},
 			auto_update = false,
 			run_on_start = true,
