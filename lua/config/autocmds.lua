@@ -30,13 +30,16 @@ autocmd("TextYankPost", {
   end,
 })
 
--- Warn if lazygit is not installed
+-- Warn if lazygit / lazydocker are not installed
 autocmd("VimEnter", {
-  group = augroup("check_lazygit", { clear = true }),
+  group = augroup("check_lazy_tools", { clear = true }),
   once = true,
   callback = function()
     if vim.fn.executable("lazygit") == 0 then
       vim.notify("lazygit not found in PATH — install it via your package manager", vim.log.levels.WARN)
+    end
+    if vim.fn.executable("lazydocker") == 0 then
+      vim.notify("lazydocker not found in PATH — install it via your package manager", vim.log.levels.WARN)
     end
   end,
 })
