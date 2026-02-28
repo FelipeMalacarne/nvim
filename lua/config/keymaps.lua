@@ -32,7 +32,13 @@ map("n", "N",     "Nzzzv",   { desc = "Prev search result (centered)" })
 map({ "n", "i" }, "<C-s>", "<cmd>w<cr><esc>", { desc = "Save file" })
 
 -- Reload config
-map("n", "<leader>rc", "<cmd>source $MYVIMRC<cr>", { desc = "Reload config" })
+map("n", "<leader>rc", function()
+  for _, mod in ipairs({ "config.options", "config.keymaps", "config.autocmds" }) do
+    package.loaded[mod] = nil
+    require(mod)
+  end
+  vim.notify("Config reloaded")
+end, { desc = "Reload config" })
 
 -- Diagnostics
 map("n", "<leader>cd", vim.diagnostic.open_float, { desc = "Code diagnostics" })
