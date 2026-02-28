@@ -30,6 +30,17 @@ autocmd("TextYankPost", {
   end,
 })
 
+-- Warn if lazygit is not installed
+autocmd("VimEnter", {
+  group = augroup("check_lazygit", { clear = true }),
+  once = true,
+  callback = function()
+    if vim.fn.executable("lazygit") == 0 then
+      vim.notify("lazygit not found in PATH — install it via your package manager", vim.log.levels.WARN)
+    end
+  end,
+})
+
 -- Resize splits when the terminal window is resized
 autocmd("VimResized", {
   group = augroup("resize_splits", { clear = true }),
