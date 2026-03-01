@@ -1,4 +1,5 @@
 local map = vim.keymap.set
+local ui = require("config.ui")
 
 -- Clear search highlight
 map("n", "<Esc>", "<cmd>nohlsearch<cr>", { desc = "Clear search highlight" })
@@ -59,7 +60,7 @@ map("n", "<leader>lg", function()
 		row = math.floor((vim.o.lines - height) / 2),
 		col = math.floor((vim.o.columns - width) / 2),
 		style = "minimal",
-		border = "rounded",
+		border = ui.float_border,
 	})
 	vim.fn.termopen("lazygit", {
 		on_exit = function()
@@ -81,7 +82,7 @@ map("n", "<leader>ld", function()
 		row = math.floor((vim.o.lines - height) / 2),
 		col = math.floor((vim.o.columns - width) / 2),
 		style = "minimal",
-		border = "rounded",
+		border = ui.float_border,
 	})
 	vim.fn.termopen("lazydocker", {
 		on_exit = function()
@@ -103,7 +104,7 @@ map("n", "<leader>ls", function()
 		row = math.floor((vim.o.lines - height) / 2),
 		col = math.floor((vim.o.columns - width) / 2),
 		style = "minimal",
-		border = "rounded",
+		border = ui.float_border,
 	})
 
 	vim.fn.termopen("lazysql", {
@@ -135,7 +136,7 @@ map({ "n", "t" }, "<C-/>", function()
 		row = math.floor((vim.o.lines - height) / 2),
 		col = math.floor((vim.o.columns - width) / 2),
 		style = "minimal",
-		border = "rounded",
+		border = ui.float_border,
 	})
 	if vim.bo[term_buf].buftype ~= "terminal" then
 		vim.fn.termopen(vim.o.shell, {
