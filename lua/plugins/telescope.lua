@@ -12,9 +12,9 @@ return {
       { "<leader>fs", "<cmd>Telescope lsp_document_symbols<cr>",     desc = "Document symbols" },
       { "<leader>fw", "<cmd>Telescope lsp_dynamic_workspace_symbols<cr>", desc = "Workspace symbols" },
       { "<leader>fd", "<cmd>Telescope diagnostics<cr>",              desc = "Diagnostics" },
-      { "<leader>gc", "<cmd>Telescope git_commits<cr>",              desc = "Git commits" },
-      { "<leader>gs", "<cmd>Telescope git_status<cr>",               desc = "Git status" },
-      { "<leader>gb", "<cmd>Telescope git_branches<cr>",             desc = "Git branches" },
+      -- { "<leader>gc", "<cmd>Telescope git_commits<cr>",              desc = "Git commits" },
+      -- { "<leader>gs", "<cmd>Telescope git_status<cr>",               desc = "Git status" },
+      -- { "<leader>gb", "<cmd>Telescope git_branches<cr>",             desc = "Git branches" },
       { "<leader>/",  "<cmd>Telescope current_buffer_fuzzy_find<cr>", desc = "Fuzzy find in buffer" },
     },
     dependencies = {

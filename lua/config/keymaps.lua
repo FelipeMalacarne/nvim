@@ -49,7 +49,7 @@ end, { desc = "Reload config" })
 map("n", "<leader>cd", vim.diagnostic.open_float, { desc = "Code diagnostics" })
 
 -- Lazygit
-map("n", "<leader>lg", function()
+map("n", "<leader>gg", function()
 	local buf = vim.api.nvim_create_buf(false, true)
 	local width = math.floor(vim.o.columns * 0.9)
 	local height = math.floor(vim.o.lines * 0.9)
@@ -71,7 +71,7 @@ map("n", "<leader>lg", function()
 end, { desc = "Lazygit" })
 
 -- Lazydocker
-map("n", "<leader>ld", function()
+map("n", "<leader>gd", function()
 	local buf = vim.api.nvim_create_buf(false, true)
 	local width = math.floor(vim.o.columns * 0.9)
 	local height = math.floor(vim.o.lines * 0.9)
@@ -92,7 +92,7 @@ map("n", "<leader>ld", function()
 	vim.cmd("startinsert")
 end, { desc = "Lazydocker" })
 
-map("n", "<leader>ls", function()
+map("n", "<leader>gs", function()
 	local buf = vim.api.nvim_create_buf(false, true)
 	local width = math.floor(vim.o.columns * 0.9)
 	local height = math.floor(vim.o.lines * 0.9)
