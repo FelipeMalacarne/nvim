@@ -111,6 +111,7 @@ map("n", "<leader>ls", function()
 			vim.api.nvim_buf_delete(buf, { force = true })
 		end,
 	})
+	vim.cmd("startinsert")
 end, { desc = "LazySQL" })
 
 -- Quit
