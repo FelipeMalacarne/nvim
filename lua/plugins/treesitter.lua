@@ -49,6 +49,7 @@ return {
           local ok, stats = pcall(vim.uv.fs_stat, vim.api.nvim_buf_get_name(ev.buf))
           if ok and stats and stats.size > 100 * 1024 then return end
           vim.treesitter.start()
+          vim.bo[ev.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
         end,
       })
     end,
