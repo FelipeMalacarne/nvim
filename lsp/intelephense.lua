@@ -17,9 +17,6 @@ return {
       environment = {
         phpVersion = "8.3",
       },
-      diagnostics = {
-        undefinedTypes = false,
-      },
       stubs = {
         "apache", "bcmath", "bz2", "calendar", "com_dotnet", "Core",
         "ctype", "curl", "date", "dba", "dom", "enchant", "exif",
