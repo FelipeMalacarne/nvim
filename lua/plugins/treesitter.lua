@@ -32,7 +32,7 @@ return {
       local ft_pattern = {
         "go", "gomod", "gotmpl",
         "php",
-        "typescript", "tsx", "javascript",
+        "typescript", "typescriptreact", "javascript", "javascriptreact",
         "html", "css", "scss", "json", "jsonc", "yaml",
         "lua", "vim", "vimdoc",
         "markdown", "markdown_inline",
