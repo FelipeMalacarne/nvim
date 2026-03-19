@@ -115,6 +115,40 @@ map("n", "<leader>gs", function()
 	vim.cmd("startinsert")
 end, { desc = "LazySQL" })
 
+-- claude code
+local claude_buf = nil
+local claude_win = nil
+map({ "n", "t" }, "<C-g>", function()
+	if claude_win and vim.api.nvim_win_is_valid(claude_win) then
+		vim.api.nvim_win_close(claude_win, false)
+		claude_win = nil
+		return
+	end
+	if not claude_buf or not vim.api.nvim_buf_is_valid(claude_buf) then
+		claude_buf = vim.api.nvim_create_buf(false, true)
+	end
+	local width = math.floor(vim.o.columns * 0.9)
+	local height = math.floor(vim.o.lines * 0.9)
+	claude_win = vim.api.nvim_open_win(claude_buf, true, {
+		relative = "editor",
+		width = width,
+		height = height,
+		row = math.floor((vim.o.lines - height) / 2),
+		col = math.floor((vim.o.columns - width) / 2),
+		style = "minimal",
+		border = ui.float_border,
+	})
+	if vim.bo[claude_buf].buftype ~= "terminal" then
+		vim.fn.termopen("claude", {
+			on_exit = function()
+				claude_buf = nil
+				claude_win = nil
+			end,
+		})
+	end
+	vim.cmd("startinsert")
+end, { desc = "Toggle Claude Code" })
+
 -- Terminal
 local term_buf = nil
 local term_win = nil
