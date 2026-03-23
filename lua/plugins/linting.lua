@@ -12,6 +12,12 @@ return {
 				javascriptreact = { "eslint_d" },
 				typescriptreact = { "eslint_d" },
 				go = { "golangcilint" },
+				-- statix: catches Nix antipatterns and suggests idiomatic rewrites
+				-- deadnix: finds unused/dead code in Nix files
+				-- Both require tools on $PATH:
+				--   nix profile install nixpkgs#statix nixpkgs#deadnix
+				-- Note: linting fires on BufWritePost and InsertLeave, not on file open
+				nix = { "statix", "deadnix" },
 				-- lua        = { "selene" },
 			}
 
