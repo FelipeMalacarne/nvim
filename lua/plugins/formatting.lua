@@ -29,6 +29,10 @@ return {
 				scss = { "prettier" },
 				html = { "prettier" },
 				sh = { "shfmt" },
+				-- nixfmt is the official Nix formatter (RFC 166 style)
+				-- Requires nixfmt on $PATH (install via: nix profile install nixpkgs#nixfmt-rfc-style)
+				-- Note: format_on_save is false — run manually with <leader>cf
+				nix = { "nixfmt" },
 			},
 			format_on_save = false,
 		},
