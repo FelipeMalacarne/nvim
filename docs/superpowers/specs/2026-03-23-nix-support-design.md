@@ -13,16 +13,20 @@ All tools are expected to be installed via Nix (e.g., `nix profile install`, hom
 
 ### 1. Treesitter — `lua/plugins/treesitter.lua`
 
-- Add `"nix"` to the `require("nvim-treesitter").install({...})` call
-- Add `"nix"` to the `ft_pattern` list so highlighting and indentation are enabled for `.nix` files
+Two separate additions are required:
+
+- Add `"nix"` to the `require("nvim-treesitter").install({...})` call — this downloads and compiles the parser
+- Add `"nix"` to the `ft_pattern` list — this enables Treesitter highlighting and indentation when a `.nix` file is opened
+
+Both are required; omitting either will result in partial or broken support.
 
 ### 2. LSP — new file `lsp/nixd.lua`
 
-Create a new LSP config file following the same structure as existing files (`gopls.lua`, `lua_ls.lua`, etc.):
+Create a new LSP config file following the structure of `lsp/gopls.lua` (use this as the reference, not `lsp/lua_ls.lua` which has a typo in its `root_markers` key):
 
 - `cmd = { "nixd" }` — invokes the nixd binary
 - `filetypes = { "nix" }` — activates for Nix files
-- `root_markers = { "flake.nix", "default.nix", ".git" }` — determines project root; flake.nix takes priority as it's the modern entry point
+- `root_markers = { "flake.nix", "default.nix", ".git" }` — determines project root; `flake.nix` takes priority as it's the modern Nix entry point
 
 Neovim 0.11+ resolves `lsp/*.lua` files from the runtimepath automatically, so no plugin registration is needed.
 
@@ -34,6 +38,7 @@ Neovim 0.11+ resolves `lsp/*.lua` files from the runtimepath automatically, so n
 
 - Add `nix = { "nixfmt" }` to `formatters_by_ft` in the conform.nvim opts
 - `nixfmt` is the official Nix formatter (RFC 166 style); must be on `$PATH`
+- Note: `format_on_save = false` is the convention in this config — `nixfmt` will only run on manual invocation via `<leader>cf` or `:ConformInfo`
 
 ### 5. Linting — `lua/plugins/linting.lua`
 
@@ -48,22 +53,24 @@ Neovim 0.11+ resolves `lsp/*.lua` files from the runtimepath automatically, so n
 .nix file opened
   → Treesitter highlights syntax
   → nixd attaches (LSP): completions, diagnostics, go-to-definition
-  → on BufWritePost/InsertLeave: statix + deadnix lint the buffer
-  → on <leader>cf or format command: nixfmt formats the buffer
+  → on BufWritePost or InsertLeave: statix + deadnix lint the buffer
+      (note: linting does NOT fire on file open — first run is on first write or InsertLeave)
+  → on <leader>cf or manual format command: nixfmt formats the buffer
+      (format_on_save is disabled by convention in this config)
 ```
 
 ## Constraints
 
 - No Mason integration — all tools managed externally via Nix
 - No binary guards — follows existing config convention (other LSPs also assume tools are on PATH)
-- `nixd` provides the best flake-aware completions by evaluating Nix expressions at runtime; it requires `nixd` to be installed, not just `nil_ls`
+- `nixd` provides the best flake-aware completions by evaluating Nix expressions at runtime
 
 ## Files Changed
 
 | File | Change |
 |------|--------|
-| `lua/plugins/treesitter.lua` | Add `"nix"` to install list and ft_pattern |
-| `lsp/nixd.lua` | New file — nixd LSP config |
+| `lua/plugins/treesitter.lua` | Add `"nix"` to install list AND to ft_pattern (two separate additions) |
+| `lsp/nixd.lua` | New file — nixd LSP config (model: `gopls.lua`) |
 | `lua/config/lsp.lua` | Add `"nixd"` to `vim.lsp.enable()` |
 | `lua/plugins/formatting.lua` | Add `nix = { "nixfmt" }` |
 | `lua/plugins/linting.lua` | Add `nix = { "statix", "deadnix" }` |
