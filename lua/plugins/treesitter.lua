@@ -24,7 +24,7 @@ return {
         -- Git
         "gitcommit", "gitignore", "diff",
         -- Misc
-        "toml", "dockerfile", "regex",
+        "toml", "dockerfile", "regex", "nix",
       })
 
       -- Filetypes where we enable treesitter highlighting
@@ -38,7 +38,7 @@ return {
         "markdown", "markdown_inline",
         "bash", "sh",
         "gitcommit", "diff",
-        "toml", "dockerfile",
+        "toml", "dockerfile", "nix",
       }
 
       vim.api.nvim_create_autocmd("FileType", {
