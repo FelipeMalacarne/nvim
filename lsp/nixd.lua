@@ -10,4 +10,13 @@ return {
 	-- default.nix: covers classic/legacy Nix projects
 	-- .git: fallback for projects without a Nix entry point at root
 	root_markers = { "flake.nix", "default.nix", ".git" },
+	-- Uncomment and adjust to enable rich pkgs.* completions.
+	-- Without this, nixd starts but nixpkgs attribute completions will be empty.
+	-- See: https://github.com/nix-community/nixd/blob/main/docs/configuration.md
+	-- settings = {
+	-- 	nixd = {
+	-- 		nixpkgs = { expr = "import <nixpkgs> {}" },
+	-- 		formatting = { command = { "nixfmt" } },
+	-- 	},
+	-- },
 }
