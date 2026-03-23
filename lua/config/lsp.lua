@@ -9,6 +9,7 @@ vim.lsp.enable({
 	"gopls",
 	"ts_ls",
 	"lua_ls",
+	"nixd",
 })
 
 -- LSP keymaps — set per buffer on attach
