@@ -34,7 +34,7 @@ require("statusline").setup()
 -- Plugins (lazy.nvim auto-discovers all files under lua/plugins/)
 require("lazy").setup("plugins", {
   defaults        = { lazy = false },
-  install         = { colorscheme = { "catppuccin" } },
+  -- install         = { colorscheme = { "catppuccin" } },
   checker         = { enabled = true, notify = false },
   change_detection = { notify = false },
   -- When running from the nix store the config dir is read-only,

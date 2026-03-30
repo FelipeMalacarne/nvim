@@ -15,7 +15,7 @@ return {
         maxSize = 5000000,
       },
       environment = {
-        phpVersion = "8.3",
+        phpVersion = "8.5",
       },
       stubs = {
         "apache", "bcmath", "bz2", "calendar", "com_dotnet", "Core",
