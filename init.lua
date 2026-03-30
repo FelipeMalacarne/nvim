@@ -37,4 +37,9 @@ require("lazy").setup("plugins", {
   install         = { colorscheme = { "catppuccin" } },
   checker         = { enabled = true, notify = false },
   change_detection = { notify = false },
+  -- When running from the nix store the config dir is read-only,
+  -- so keep the lock file in the writable data directory instead.
+  lockfile = vim.env.NIX_MANAGED == "1"
+    and vim.fn.stdpath("data") .. "/lazy-lock.json"
+    or vim.fn.stdpath("config") .. "/lazy-lock.json",
 })
