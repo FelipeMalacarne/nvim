@@ -43,3 +43,9 @@ require("lazy").setup("plugins", {
     and vim.fn.stdpath("data") .. "/lazy-lock.json"
     or vim.fn.stdpath("config") .. "/lazy-lock.json",
 })
+
+-- lazy.nvim resets runtimepath during setup, so Nix-provided treesitter parsers
+-- must be re-added after setup completes.
+if vim.env.NIX_MANAGED == "1" and vim.env.NVIM_TREESITTER_PARSERS then
+  vim.opt.rtp:append(vim.env.NVIM_TREESITTER_PARSERS)
+end

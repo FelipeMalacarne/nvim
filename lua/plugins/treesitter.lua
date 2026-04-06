@@ -8,24 +8,26 @@ return {
     build = ":TSUpdate",
     lazy  = false, -- plugin does not support lazy-loading
     config = function()
-      -- Neovim 0.11+ bundles: c, lua, vim, vimdoc, query, markdown, markdown_inline
-      -- Install the rest we need
-      require("nvim-treesitter").install({
-        -- Go
-        "go", "gomod", "gosum", "gotmpl",
-        -- PHP / Laravel
-        "php", "phpdoc",
-        -- TypeScript / React
-        "typescript", "tsx", "javascript", "jsdoc",
-        -- Web
-        "html", "css", "scss", "json", "jsonc", "yaml",
-        -- Shell
-        "bash",
-        -- Git
-        "gitcommit", "gitignore", "diff",
-        -- Misc
-        "toml", "dockerfile", "regex", "nix",
-      })
+      -- When running under Nix, parsers are pre-built and added to runtimepath
+      -- via flake.nix — no async compilation needed or wanted.
+      if vim.env.NIX_MANAGED ~= "1" then
+        require("nvim-treesitter").install({
+          -- Go
+          "go", "gomod", "gosum", "gotmpl",
+          -- PHP / Laravel
+          "php", "phpdoc",
+          -- TypeScript / React
+          "typescript", "tsx", "javascript", "jsdoc",
+          -- Web
+          "html", "css", "scss", "json", "jsonc", "yaml",
+          -- Shell
+          "bash",
+          -- Git
+          "gitcommit", "gitignore", "diff",
+          -- Misc
+          "toml", "dockerfile", "regex", "nix",
+        })
+      end
 
       -- Filetypes where we enable treesitter highlighting
       -- (bundled parsers are included so lua/vim/markdown work out of the box)
