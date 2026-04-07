@@ -34,23 +34,22 @@
         base0F = "f2cdcd";
       };
 
-      mkTools =
-        pkgs: with pkgs; [
-          nodejs
-          # LSP servers
-          nixd
-          gopls
-          lua-language-server
-          nodePackages.typescript-language-server
-          nodePackages.intelephense
+      mkTools = pkgs: with pkgs; [
+        nodejs
+        # LSP servers
+        nixd
+        gopls
+        lua-language-server
+        typescript-language-server
+        intelephense
 
-          # Formatters
-          nixfmt
-          stylua
-          nodePackages.prettier
-          gotools
-          go
-          shfmt
+        # Formatters
+        nixfmt
+        stylua
+        prettier
+        gotools
+        go
+        shfmt
 
           # Linters
           statix
