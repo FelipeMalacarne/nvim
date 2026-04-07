@@ -6,74 +6,118 @@
     flake-utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = { self, nixpkgs, flake-utils }:
+  outputs =
+    {
+      self,
+      nixpkgs,
+      flake-utils,
+    }:
     let
       # Default color palette — Catppuccin Mocha
       # Format: base16 attrset without # prefix (compatible with nix-colors colorScheme.palette)
       catppuccinMocha = {
-        base00 = "1e1e2e"; base01 = "181825"; base02 = "313244"; base03 = "45475a";
-        base04 = "585b70"; base05 = "cdd6f4"; base06 = "f5e0dc"; base07 = "b4befe";
-        base08 = "f38ba8"; base09 = "fab387"; base0A = "f9e2af"; base0B = "a6e3a1";
-        base0C = "94e2d5"; base0D = "89b4fa"; base0E = "cba6f7"; base0F = "f2cdcd";
+        base00 = "1e1e2e";
+        base01 = "181825";
+        base02 = "313244";
+        base03 = "45475a";
+        base04 = "585b70";
+        base05 = "cdd6f4";
+        base06 = "f5e0dc";
+        base07 = "b4befe";
+        base08 = "f38ba8";
+        base09 = "fab387";
+        base0A = "f9e2af";
+        base0B = "a6e3a1";
+        base0C = "94e2d5";
+        base0D = "89b4fa";
+        base0E = "cba6f7";
+        base0F = "f2cdcd";
       };
 
-      mkTools = pkgs: with pkgs; [
-        # LSP servers
-        nixd
-        gopls
-        lua-language-server
-        nodePackages.typescript-language-server
-        nodePackages.intelephense
+      mkTools =
+        pkgs: with pkgs; [
+          nodejs
+          # LSP servers
+          nixd
+          gopls
+          lua-language-server
+          nodePackages.typescript-language-server
+          nodePackages.intelephense
 
-        # Formatters
-        nixfmt
-        stylua
-        nodePackages.prettier
-        gotools
-        go
-        shfmt
+          # Formatters
+          nixfmt
+          stylua
+          nodePackages.prettier
+          gotools
+          go
+          shfmt
 
-        # Linters
-        statix
-        deadnix
-        golangci-lint
-        phpstan
+          # Linters
+          statix
+          deadnix
+          golangci-lint
+          phpstan
 
-        # Git tools used in keymaps
-        lazygit
-        lazysql
-        lazydocker
+          # Git tools used in keymaps
+          lazygit
+          lazysql
+          lazydocker
 
-        # Required to compile telescope-fzf-native
-        gcc
-        gnumake
-      ];
+          # Required to compile telescope-fzf-native
+          gcc
+          gnumake
+          fd
+          ripgrep
 
-      mkTreesitterParsers = pkgs:
+        ];
+
+      mkTreesitterParsers =
+        pkgs:
         let
           treesitterWithGrammars = pkgs.vimPlugins.nvim-treesitter.withPlugins (p: [
             # Go
-            p.go p.gomod p.gosum p.gotmpl
+            p.go
+            p.gomod
+            p.gosum
+            p.gotmpl
             # PHP
-            p.php p.phpdoc
+            p.php
+            p.phpdoc
             # TypeScript / JS
-            p.typescript p.tsx p.javascript p.jsdoc
+            p.typescript
+            p.tsx
+            p.javascript
+            p.jsdoc
             # Web
-            p.html p.css p.json p.yaml
+            p.html
+            p.css
+            p.json
+            p.yaml
             # Shell
             p.bash
             # Git
-            p.gitcommit p.gitignore p.diff
+            p.gitcommit
+            p.gitignore
+            p.diff
             # Misc
-            p.toml p.dockerfile p.regex p.nix
+            p.toml
+            p.dockerfile
+            p.regex
+            p.nix
             # Bundled in Neovim but explicit for safety
-            p.lua p.vim p.vimdoc p.query p.markdown p.markdown_inline p.c
+            p.lua
+            p.vim
+            p.vimdoc
+            p.query
+            p.markdown
+            p.markdown_inline
+            p.c
           ]);
         in
-          pkgs.symlinkJoin {
-            name = "nvim-treesitter-parsers";
-            paths = treesitterWithGrammars.dependencies;
-          };
+        pkgs.symlinkJoin {
+          name = "nvim-treesitter-parsers";
+          paths = treesitterWithGrammars.dependencies;
+        };
 
       # Build the wrapped nvim package with an injected color palette.
       #
@@ -82,47 +126,53 @@
       #
       # Each color is exported as NIX_COLOR_BASE00..NIX_COLOR_BASE0F so the
       # Lua config can read them via vim.fn.getenv("NIX_COLOR_BASE0E") etc.
-      mkPackage = pkgs: colors:
+      mkPackage =
+        pkgs: colors:
         let
-          tools           = mkTools pkgs;
+          tools = mkTools pkgs;
           treesitterParsers = mkTreesitterParsers pkgs;
-          colorExports    = builtins.concatStringsSep "\n"
-            (map (n: "export NIX_COLOR_${n}=\"#${colors.${n}}\"")
-              (builtins.attrNames colors));
+          colorExports = builtins.concatStringsSep "\n" (
+            map (n: "export NIX_COLOR_${n}=\"#${colors.${n}}\"") (builtins.attrNames colors)
+          );
         in
-          pkgs.writeShellScriptBin "nvim" ''
-            set -e
-            export NIX_MANAGED=1
-            ${colorExports}
-            export PATH="${pkgs.lib.makeBinPath tools}:$PATH"
+        pkgs.writeShellScriptBin "nvim" ''
+          set -e
+          export NIX_MANAGED=1
+          ${colorExports}
+          export PATH="${pkgs.lib.makeBinPath tools}:$PATH"
 
-            APPNAME="nvim-flake"
-            CONFIG_LINK="''${XDG_CONFIG_HOME:-$HOME/.config}/$APPNAME"
-            DATA_DIR="''${XDG_DATA_HOME:-$HOME/.local/share}/$APPNAME"
+          APPNAME="nvim-flake"
+          CONFIG_LINK="''${XDG_CONFIG_HOME:-$HOME/.config}/$APPNAME"
+          DATA_DIR="''${XDG_DATA_HOME:-$HOME/.local/share}/$APPNAME"
 
-            if [ "$(readlink "$CONFIG_LINK" 2>/dev/null)" != "${self}" ]; then
-              mkdir -p "$(dirname "$CONFIG_LINK")"
-              ln -sfn "${self}" "$CONFIG_LINK"
-            fi
+          if [ "$(readlink "$CONFIG_LINK" 2>/dev/null)" != "${self}" ]; then
+            mkdir -p "$(dirname "$CONFIG_LINK")"
+            ln -sfn "${self}" "$CONFIG_LINK"
+          fi
 
-            TS_LINK="$DATA_DIR/nix/nvim-treesitter"
-            if [ "$(readlink "$TS_LINK" 2>/dev/null)" != "${treesitterParsers}" ]; then
-              mkdir -p "$(dirname "$TS_LINK")"
-              ln -sfn "${treesitterParsers}" "$TS_LINK"
-            fi
+          TS_LINK="$DATA_DIR/nix/nvim-treesitter"
+          if [ "$(readlink "$TS_LINK" 2>/dev/null)" != "${treesitterParsers}" ]; then
+            mkdir -p "$(dirname "$TS_LINK")"
+            ln -sfn "${treesitterParsers}" "$TS_LINK"
+          fi
 
-            export NVIM_APPNAME="$APPNAME"
-            export NVIM_TREESITTER_PARSERS="$TS_LINK"
-            exec ${pkgs.neovim}/bin/nvim "$@"
-          '';
+          export NVIM_APPNAME="$APPNAME"
+          export NVIM_TREESITTER_PARSERS="$TS_LINK"
+          exec ${pkgs.neovim}/bin/nvim "$@"
+        '';
 
     in
-    (flake-utils.lib.eachDefaultSystem (system:
+    (flake-utils.lib.eachDefaultSystem (
+      system:
       let
-        pkgs              = import nixpkgs { inherit system; config.allowUnfree = true; };
-        tools             = mkTools pkgs;
+        pkgs = import nixpkgs {
+          inherit system;
+          config.allowUnfree = true;
+        };
+        tools = mkTools pkgs;
         treesitterParsers = mkTreesitterParsers pkgs;
-      in {
+      in
+      {
         # `nix run` — uses catppuccin-mocha by default
         packages.default = mkPackage pkgs catppuccinMocha;
 
@@ -147,7 +197,8 @@
           '';
         };
       }
-    )) // {
+    ))
+    // {
       # Exported for use in external configs.
       # Usage: inputs.nvim-config.lib.mkPackage pkgs config.colorScheme.palette
       lib.mkPackage = mkPackage;
