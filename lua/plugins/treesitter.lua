@@ -15,7 +15,7 @@ return {
           -- Go
           "go", "gomod", "gosum", "gotmpl",
           -- PHP / Laravel
-          "php", "phpdoc",
+          "php", "phpdoc", "blade",
           -- TypeScript / React
           "typescript", "tsx", "javascript", "jsdoc",
           -- Web
@@ -33,7 +33,7 @@ return {
       -- (bundled parsers are included so lua/vim/markdown work out of the box)
       local ft_pattern = {
         "go", "gomod", "gotmpl",
-        "php",
+        "php", "blade",
         "typescript", "typescriptreact", "javascript", "javascriptreact",
         "html", "css", "scss", "json", "jsonc", "yaml",
         "lua", "vim", "vimdoc",

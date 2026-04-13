@@ -47,5 +47,5 @@ require("lazy").setup("plugins", {
 -- lazy.nvim resets runtimepath during setup, so Nix-provided treesitter parsers
 -- must be re-added after setup completes.
 if vim.env.NIX_MANAGED == "1" and vim.env.NVIM_TREESITTER_PARSERS then
-  vim.opt.rtp:append(vim.env.NVIM_TREESITTER_PARSERS)
+  vim.opt.rtp:prepend(vim.env.NVIM_TREESITTER_PARSERS)
 end

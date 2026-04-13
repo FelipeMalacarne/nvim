@@ -34,22 +34,23 @@
         base0F = "f2cdcd";
       };
 
-      mkTools = pkgs: with pkgs; [
-        nodejs
-        # LSP servers
-        nixd
-        gopls
-        lua-language-server
-        typescript-language-server
-        intelephense
+      mkTools =
+        pkgs: with pkgs; [
+          nodejs
+          # LSP servers
+          nixd
+          gopls
+          lua-language-server
+          typescript-language-server
+          intelephense
 
-        # Formatters
-        nixfmt
-        stylua
-        prettier
-        gotools
-        go
-        shfmt
+          # Formatters
+          nixfmt
+          stylua
+          prettier
+          gotools
+          go
+          shfmt
 
           # Linters
           statix
@@ -82,6 +83,7 @@
             # PHP
             p.php
             p.phpdoc
+            p.blade
             # TypeScript / JS
             p.typescript
             p.tsx
@@ -113,10 +115,7 @@
             p.c
           ]);
         in
-        pkgs.symlinkJoin {
-          name = "nvim-treesitter-parsers";
-          paths = treesitterWithGrammars.dependencies;
-        };
+        treesitterWithGrammars;
 
       # Build the wrapped nvim package with an injected color palette.
       #
