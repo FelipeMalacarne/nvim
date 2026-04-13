@@ -115,7 +115,14 @@
             p.c
           ]);
         in
-        treesitterWithGrammars;
+        pkgs.symlinkJoin {
+          name = "nvim-treesitter-parsers";
+          # treesitterWithGrammars has the queries (queries/<lang>/highlights.scm)
+          # but NOT the compiled parser .so files in this nixpkgs version.
+          # The individual grammar packages in .dependencies have the parsers.
+          # We need both so queries and parsers are from the same version.
+          paths = [ treesitterWithGrammars ] ++ treesitterWithGrammars.dependencies;
+        };
 
       # Build the wrapped nvim package with an injected color palette.
       #
