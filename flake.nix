@@ -82,6 +82,7 @@
             p.gotmpl
             # PHP
             p.php
+            p.php_only
             p.phpdoc
             p.blade
             # TypeScript / JS
