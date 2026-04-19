@@ -8,6 +8,10 @@ return {
     build = ":TSUpdate",
     lazy  = false, -- plugin does not support lazy-loading
     config = function()
+      -- Map filetypes to parser names where they differ
+      vim.treesitter.language.register("tsx", "typescriptreact")
+      vim.treesitter.language.register("javascript", "javascriptreact")
+
       -- When running under Nix, parsers are pre-built and added to runtimepath
       -- via flake.nix — no async compilation needed or wanted.
       if vim.env.NIX_MANAGED ~= "1" then

@@ -57,6 +57,7 @@
           deadnix
           golangci-lint
           phpstan
+          eslint_d
 
           # Git tools used in keymaps
           lazygit
