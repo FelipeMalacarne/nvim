@@ -119,11 +119,11 @@
         in
         pkgs.symlinkJoin {
           name = "nvim-treesitter-parsers";
-          # Base nvim-treesitter provides ALL query dirs (including virtual ones like
-          # ecma/jsx/scss that inherited queries depend on) but no compiled parsers.
-          # Grammar .dependencies provide the compiled parser .so files.
-          # Both from same nixpkgs revision → version-compatible.
-          paths = [ pkgs.vimPlugins.nvim-treesitter ] ++ treesitterWithGrammars.dependencies;
+          # treesitterWithGrammars has the queries (queries/<lang>/highlights.scm)
+          # but NOT the compiled parser .so files in this nixpkgs version.
+          # The individual grammar packages in .dependencies have the parsers.
+          # We need both so queries and parsers are from the same version.
+          paths = [ treesitterWithGrammars ] ++ treesitterWithGrammars.dependencies;
         };
 
       # Build the wrapped nvim package with an injected color palette.
